@@ -2,6 +2,12 @@
 
 The Radar Visualizer (`apps/radar-ui/src/app/components/radar-canvas`) renders high-dimensional semantic vector state onto a 2D Cartesian radar display at **60 frames per second**.
 
+<div align="center">
+  <img src="assets/cache-hit-radar.png" alt="Radar Canvas Shockwave and Threshold Boundary" width="100%" />
+</div>
+
+<br/>
+
 ```
                 Angular Signals & State Stream
                              │

@@ -8,6 +8,14 @@
 [![Angular 17+](https://img.shields.io/badge/Angular-17+-DD0031?logo=angular&logoColor=white)](apps/radar-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+<br/>
+
+<div align="center">
+  <img src="docs/assets/dashboard-overview.png" alt="PromptRadar Main Dashboard Overview" width="100%" />
+</div>
+
+<br/>
+
 ---
 
 ## ⚡ 1-Minute Executive Summary
@@ -176,11 +184,30 @@ data: [DONE]
 
 ## 🎯 Radar Canvas Visualization Semantics
 
+<div align="center">
+  <img src="docs/assets/cache-hit-radar.png" alt="PromptRadar Cache Hit Shockwave & Threshold Halo" width="100%" />
+</div>
+
+<br/>
+
 * 🟢 **Emerald Green Dot & Shockwave**: Cache Hit ($\text{sim} \ge \tau$). Response returned in 2ms.
 * 🟣 **Neon Purple Dot & Shockwave**: Cache Miss ($\text{sim} < \tau$). LLM invoked.
 * ⭕ **Dashed Circle Halo**: Similarity Threshold radius $\tau$. If query falls inside, it's a hit.
 * 🟡 **Glowing Cyan/Amber Dots**: Cached prompts scaled by historical hit count.
 * ⚡ **Radar Sweep Beam**: 60 FPS sweeping indicator operating outside Zone.js.
+
+---
+
+## 📈 Real-Time Telemetry & Financial Cost Analytics
+
+<div align="center">
+  <img src="docs/assets/telemetry-analytics.png" alt="PromptRadar Real-Time Telemetry Feed and Cost Savings" width="100%" />
+</div>
+
+<br/>
+
+* **Telemetry Log Table**: Historical record of query execution, latency comparison, and token savings.
+* **Sensitivity Curve**: Dynamic chart projecting token & financial savings across thresholds $\tau \in [0.70, 0.98]$.
 
 ---
 

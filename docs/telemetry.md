@@ -2,6 +2,12 @@
 
 PromptRadar implements an asynchronous, non-blocking telemetry architecture designed to ensure that control plane observability **never degrades data plane inference latency**.
 
+<div align="center">
+  <img src="assets/telemetry-analytics.png" alt="Telemetry Ingestion and Analytics Dashboard" width="100%" />
+</div>
+
+<br/>
+
 ```
     Inference Request
             │
