@@ -43,6 +43,8 @@ services:
     environment:
       PORT: ${PROXY_PORT:-8081}
       CONTROL_PLANE_URL: ${CONTROL_PLANE_URL:-http://radar-control-plane:8080/api/v1/telemetry}
+      CACHE_TTL: ${CACHE_TTL:-24h}
+      CACHE_MAX_ENTRIES: ${CACHE_MAX_ENTRIES:-10000}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     ports:
       - "${PROXY_PORT:-8081}:8081"

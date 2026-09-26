@@ -178,18 +178,55 @@ Because $N \le 10,000$ in single-tenant deployments, flat scan provides **100% e
 
 ---
 
-## 7. Current Limitations & Future Roadmap
+## 7. Eviction Policies: Sliding-Window TTL & Max Entries LRU
 
-### Current Limitations
-1. **Linear Scan Scaling**: As $N$ exceeds 100,000 entries, CPU cache thrashing increases scan times beyond $15\text{ms}$.
-2. **Node Ephemerality**: If the Go proxy process restarts, in-memory entries must be re-seeded from persistent storage.
-3. **No Eviction Policy**: Currently grows monotonically without LRU (Least Recently Used) or LFU (Least Frequently Used) pruning.
+PromptRadar enforces a dual-tier bounded memory model combining **time-based expiration (TTL)** with a **strict capacity cap (Max Entries LRU)** to guarantee the cache never exhausts host RAM.
+
+```
+                  New Cache Insertion
+                           │
+                           ▼
+              Is len(entries) >= MAX_ENTRIES?
+                   ┌───────┴───────┐
+                  Yes              No
+                   │               │
+                   ▼               ▼
+           Evict LRU Node     Insert Directly
+           (Oldest LastHitAt)
+                   │
+                   ▼
+        Periodic Background Ticker (Every 5m)
+                   │
+                   ▼
+     Purge All Nodes Where: (Now - LastHitAt) > TTL
+```
+
+### 1. Sliding-Window TTL (`CACHE_TTL`)
+* Evaluates `LastHitAt` for every entry:
+  - If a prompt is frequently asked, every cache hit updates `LastHitAt = time.Now()`, renewing its lifespan.
+  - If a prompt has had no traffic for longer than `CACHE_TTL`, the background worker purges it.
+* Controlled via: `CACHE_TTL=24h` (supports standard Go durations: `1h`, `24h`, `7d`).
+
+### 2. Maximum Entries Capacity Cap (`CACHE_MAX_ENTRIES`)
+* Prevents memory exhaustion during unexpected traffic surges.
+* If `len(entries) >= CACHE_MAX_ENTRIES`, `Insert()` automatically performs an **LRU eviction**:
+  $$\text{Target} = \arg\min_{e \in \text{entries}} (e.\text{LastHitAt})$$
+* The least recently queried vector is evicted under the exclusive write lock before appending the new entry.
+* Controlled via: `CACHE_MAX_ENTRIES=10000` (default: `10000` entries, consuming $\approx 42\text{MB}$ RAM).
+
+---
+
+## 8. Current Scale Limits & Future Roadmap
+
+### Current Scale Boundary
+1. **Linear Scan Scaling**: Up to $N \le 10,000$ entries, memory scan takes $< 5.5\text{ms}$. Beyond 50,000 entries, CPU cache lines saturate.
+2. **Node Ephemerality**: If the Go proxy process restarts, in-memory entries are re-seeded from `seed_prompts.json` or persistent storage.
 
 ### Evolution Path: Hybrid Indexing & pgvector
 ```
-Phase 1 (Current):   In-Memory Flat Scan + RWMutex (N ≤ 10,000)
-Phase 2 (Next):      LRU eviction based on last_hit_at + hit_count
-Phase 3 (Scale):     HNSW graph in Go memory or pgvector HNSW indexing in PostgreSQL
+Phase 1 (Current):   In-Memory Flat Scan + Sliding TTL (N ≤ 10,000)
+Phase 2 (Scale):     HNSW graph in Go memory or pgvector HNSW indexing in PostgreSQL
 ```
 * **pgvector**: Offloads vector persistence and HNSW graph indexing to the PostgreSQL control plane database using `CREATE INDEX ON cache_vectors USING hnsw (embedding vector_cosine_ops)`.
 * **Local Inverted File (IVF)**: Partition vectors into Voronoi cells to search only the closest centroids, reducing search from $N$ to $N/K$ dot products.
+

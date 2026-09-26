@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -44,6 +45,30 @@ func main() {
 
 	// 2. Initialize Components
 	vc := cache.NewVectorCache()
+	
+	// Start active TTL cleaner if CACHE_TTL is configured
+	ttlStr := os.Getenv("CACHE_TTL")
+	if ttlStr != "" {
+		if ttl, err := time.ParseDuration(ttlStr); err == nil && ttl > 0 {
+			log.Printf("Starting active VectorCache TTL cleaner (TTL: %v, interval: 5m)", ttl)
+			vc.StartTTLCleaner(ttl, 5*time.Minute)
+			defer vc.StopTTLCleaner()
+		} else {
+			log.Printf("Warning: Invalid CACHE_TTL '%s', ignoring", ttlStr)
+		}
+	}
+
+	// Configure maximum entries capacity (LRU eviction threshold)
+	maxStr := os.Getenv("CACHE_MAX_ENTRIES")
+	if maxStr != "" {
+		if n, err := strconv.Atoi(maxStr); err == nil && n > 0 {
+			log.Printf("Configured VectorCache max capacity: %d entries (LRU enabled)", n)
+			vc.SetMaxEntries(n)
+		} else {
+			log.Printf("Warning: Invalid CACHE_MAX_ENTRIES '%s', using default", maxStr)
+		}
+	}
+
 	embedder := embedding.NewEmbedder()
 	llmClient := llm.NewClient()
 	telemetryDispatcher := telemetry.NewDispatcher(controlPlaneURL)
