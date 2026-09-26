@@ -1,24 +1,56 @@
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment & Credentials
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/
 
 # Go
 bin/
 *.exe
 *.test
 *.out
+*.prof
 
 # Java / Gradle
 .gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
+*.class
+*.jar
+*.war
 
 # Node / Angular
 node_modules/
 dist/
 .angular/
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# IDEs
+# Logs
+*.log
+logs/
+
+# IDEs & Editors
 .idea/
 *.iml
 .vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
