@@ -3,6 +3,10 @@
 .AppleDouble
 .LSOverride
 
+# Internal Planning
+PLAN.md
+plan.md
+
 # Environment & Credentials
 .env
 .env.*
