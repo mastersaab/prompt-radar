@@ -1,0 +1,108 @@
+<div class="curve-panel">
+  <!-- Card Header -->
+  <div class="curve-header">
+    <div>
+      <div class="title-row">
+        <span class="chart-icon">📈</span>
+        <h3 class="chart-title">Threshold vs. Hit Rate Curve</h3>
+        <span class="chart-badge mono">Sensitivity Analysis</span>
+      </div>
+      <p class="chart-subtitle">
+        Lower threshold increases cache hits with wider semantic leeway; higher threshold enforces strict intent matching.
+      </p>
+    </div>
+
+    <div class="active-threshold-box mono">
+      <span class="active-label">Active Threshold:</span>
+      <span class="active-val">{{ (currentThreshold * 100) | number:'1.0-0' }}%</span>
+    </div>
+  </div>
+
+  <!-- SVG Chart Container -->
+  <div class="svg-container">
+    <svg viewBox="0 0 540 180" class="curve-svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00f5d4" stop-opacity="0.25" />
+          <stop offset="85%" stop-color="#00f5d4" stop-opacity="0.02" />
+          <stop offset="100%" stop-color="#00f5d4" stop-opacity="0.0" />
+        </linearGradient>
+        <linearGradient id="lineStroke" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#10b981" />
+          <stop offset="50%" stop-color="#00f5d4" />
+          <stop offset="100%" stop-color="#a855f7" />
+        </linearGradient>
+      </defs>
+
+      <!-- Horizontal Grid Lines -->
+      <line x1="45" y1="20" x2="520" y2="20" class="grid-line" />
+      <line x1="45" y1="60" x2="520" y2="60" class="grid-line" />
+      <line x1="45" y1="100" x2="520" y2="100" class="grid-line" />
+      <line x1="45" y1="140" x2="520" y2="140" class="axis-line" />
+
+      <!-- Y-Axis Ticks -->
+      <text x="36" y="24" class="y-label">100%</text>
+      <text x="36" y="64" class="y-label">65%</text>
+      <text x="36" y="104" class="y-label">35%</text>
+      <text x="36" y="144" class="y-label">0%</text>
+
+      <!-- Gradient Area Fill -->
+      <path [attr.d]="areaPath" fill="url(#areaGradient)" />
+
+      <!-- Main Spline Curve -->
+      <path [attr.d]="linePath" fill="none" stroke="url(#lineStroke)" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Active Threshold Vertical Guide Line -->
+      <line 
+        [attr.x1]="activeMarkerX" 
+        y1="15" 
+        [attr.x2]="activeMarkerX" 
+        y2="140" 
+        class="active-guide" 
+      />
+
+      <!-- Data Dots on Curve -->
+      <g *ngFor="let pt of chartPoints">
+        <circle 
+          [attr.cx]="pt.x" 
+          [attr.cy]="pt.y" 
+          r="4.5" 
+          class="data-dot" 
+        />
+        <!-- X Axis Threshold Label -->
+        <text 
+          [attr.x]="pt.x" 
+          y="158" 
+          class="x-label">
+          {{ pt.threshold | number:'1.2-2' }}
+        </text>
+      </g>
+
+      <!-- Active Position Marker Pin -->
+      <circle 
+        [attr.cx]="activeMarkerX" 
+        [attr.cy]="activeMarkerY" 
+        r="7" 
+        class="active-pin-glow"
+      />
+      <circle 
+        [attr.cx]="activeMarkerX" 
+        [attr.cy]="activeMarkerY" 
+        r="3.5" 
+        class="active-pin-core"
+      />
+    </svg>
+  </div>
+
+  <!-- Footer Trade-off Badges -->
+  <div class="curve-footer">
+    <div class="tradeoff-chip chip-aggressive">
+      <span class="chip-dot dot-green"></span>
+      <span>Aggressive (&le;0.80): High Hit Rate, Broader Matching</span>
+    </div>
+    <div class="tradeoff-chip chip-precision">
+      <span class="chip-dot dot-purple"></span>
+      <span>Strict Precision (&ge;0.92): Exact Intent, Zero Hallucination</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Go
+bin/
+*.exe
+*.test
+*.out
+
+# Java / Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+
+# IDEs
+.idea/
+*.iml
+.vscode/

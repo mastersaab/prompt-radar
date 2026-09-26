@@ -1,0 +1,179 @@
+.curve-panel {
+  background: rgba(14, 20, 36, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+
+.curve-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-icon {
+  font-size: 16px;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.chart-badge {
+  background: rgba(0, 245, 212, 0.12);
+  color: #00f5d4;
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.chart-subtitle {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.active-threshold-box {
+  background: rgba(8, 12, 24, 0.9);
+  border: 1px solid rgba(0, 245, 212, 0.35);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.active-label {
+  color: #94a3b8;
+}
+
+.active-val {
+  color: #00f5d4;
+  font-weight: 700;
+}
+
+/* SVG Chart */
+.svg-container {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  margin: 6px 0;
+}
+
+.curve-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-dasharray: 4, 4;
+}
+
+.axis-line {
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 1;
+}
+
+.y-label {
+  fill: #64748b;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  text-anchor: end;
+}
+
+.x-label {
+  fill: #94a3b8;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  text-anchor: middle;
+}
+
+.data-dot {
+  fill: #060912;
+  stroke: #00f5d4;
+  stroke-width: 2.5;
+  transition: r 0.15s;
+}
+
+.data-dot:hover {
+  r: 6;
+  fill: #00f5d4;
+}
+
+.active-guide {
+  stroke: #00f5d4;
+  stroke-dasharray: 4, 3;
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+.active-pin-glow {
+  fill: rgba(0, 245, 212, 0.35);
+  stroke: #00f5d4;
+  stroke-width: 1.5;
+}
+
+.active-pin-core {
+  fill: #ffffff;
+}
+
+/* Footer Tradeoff Badges */
+.curve-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+  flex-wrap: wrap;
+}
+
+.tradeoff-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.chip-aggressive {
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.chip-precision {
+  background: rgba(168, 85, 247, 0.1);
+  color: #e9d5ff;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.dot-green { background: #10b981; }
+.dot-purple { background: #a855f7; }

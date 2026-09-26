@@ -1,0 +1,106 @@
+[
+  {
+    "id": "prompt-go-1",
+    "prompt": "How to sort a slice in Go?",
+    "category": "Golang",
+    "response": "In Go 1.21+, you can use the standard `slices` package to sort slices conveniently:\n\n```go\npackage main\n\nimport (\n    \"fmt\"\n    \"slices\"\n)\n\nfunc main() {\n    numbers := []int{5, 2, 6, 3, 1, 4}\n    slices.Sort(numbers)\n    fmt.Println(numbers) // Output: [1 2 3 4 5 6]\n}\n```\n\nFor custom structs, use `slices.SortFunc` with a comparator function:\n```go\nslices.SortFunc(users, func(a, b User) int {\n    return cmp.Compare(a.Age, b.Age)\n})\n```",
+    "tokens_input": 12,
+    "tokens_output": 115
+  },
+  {
+    "id": "prompt-go-2",
+    "prompt": "How do goroutines and channels work in Go?",
+    "category": "Golang",
+    "response": "Goroutines are lightweight threads managed by the Go runtime. Channels provide typed conduits through which goroutines synchronize and communicate:\n\n```go\nfunc worker(ch chan string) {\n    ch <- \"work complete\"\n}\n\nfunc main() {\n    ch := make(chan string)\n    go worker(ch)\n    msg := <-ch\n    fmt.Println(msg)\n}\n```\n\nBuffered channels `make(chan T, cap)` allow asynchronous non-blocking sends until the buffer fills.",
+    "tokens_input": 14,
+    "tokens_output": 95
+  },
+  {
+    "id": "prompt-go-3",
+    "prompt": "Best practices for error handling in Go",
+    "category": "Golang",
+    "response": "In Go, errors are treated as regular values. Core best practices include:\n1. **Wrap with context**: Use `fmt.Errorf(\"failed to open config: %w\", err)` to preserve the causal error chain.\n2. **Inspect with errors.Is / As**: Use `errors.Is(err, os.ErrNotExist)` to test sentinel errors, and `errors.As` for structured custom error types.\n3. **Don't panic**: Reserve `panic` strictly for unrecoverable programmer defects at startup.\n4. **Handle once**: Either log an error or return it up the call stack; do not do both.",
+    "tokens_input": 13,
+    "tokens_output": 128
+  },
+  {
+    "id": "prompt-py-1",
+    "prompt": "How to invert a binary tree in Python",
+    "category": "Python",
+    "response": "Inverting a binary tree swaps the left and right child of every node recursively:\n\n```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef invertTree(root: TreeNode) -> TreeNode:\n    if not root:\n        return None\n    root.left, root.right = invertTree(root.right), invertTree(root.left)\n    return root\n```\n\nTime Complexity: $O(N)$ where $N$ is the number of nodes. Space Complexity: $O(H)$ for call stack height.",
+    "tokens_input": 13,
+    "tokens_output": 110
+  },
+  {
+    "id": "prompt-py-2",
+    "prompt": "How to read a CSV file using Pandas in Python",
+    "category": "Python",
+    "response": "Use `pandas.read_csv()` to parse tabular CSV files into a DataFrame:\n\n```python\nimport pandas as pd\n\n# Basic read\ndf = pd.read_csv('data.csv')\n\n# Advanced options\ndf = pd.read_csv(\n    'data.csv',\n    sep=',',\n    parse_dates=['created_at'],\n    usecols=['id', 'name', 'created_at'],\n    na_values=['N/A', 'missing']\n)\nprint(df.head())\n```",
+    "tokens_input": 14,
+    "tokens_output": 92
+  },
+  {
+    "id": "prompt-ml-1",
+    "prompt": "What is gradient descent in machine learning?",
+    "category": "Machine Learning",
+    "response": "Gradient descent is a first-order iterative optimization algorithm used to minimize an objective cost function $J(\\theta)$:\n\n$$\\theta_{t+1} = \\theta_t - \\alpha \\nabla J(\\theta_t)$$\n\nWhere $\\alpha$ is the learning rate. Key variations include:\n- **Batch Gradient Descent**: Computes gradients across the entire dataset.\n- **Stochastic (SGD)**: Updates weights per single training sample.\n- **Mini-Batch SGD**: Evaluates random mini-batches (e.g., 32–128 samples), balancing stability and computational throughput via SIMD/GPU tensor cores.",
+    "tokens_input": 12,
+    "tokens_output": 125
+  },
+  {
+    "id": "prompt-ml-2",
+    "prompt": "How does vector search and cosine similarity work?",
+    "category": "Machine Learning",
+    "response": "Vector search transforms unstructured data (text, images) into dense high-dimensional embeddings $\\mathbf{u}, \\mathbf{v} \\in \\mathbb{R}^D$.\n\nCosine similarity measures the angular orientation between two normalized vectors:\n\n$$\\text{Sim}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}$$\n\nWhen vectors are unit-normalized ($\\|\\mathbf{u}\\| = 1$), cosine similarity simplifies to the Euclidean dot product $\\sum u_i v_i$, enabling blazing-fast SIMD operations in sub-millisecond in-memory cache lookups.",
+    "tokens_input": 13,
+    "tokens_output": 130
+  },
+  {
+    "id": "prompt-sys-1",
+    "prompt": "Explain CAP theorem with examples",
+    "category": "System Design",
+    "response": "Eric Brewer's CAP Theorem states that a distributed data store can guarantee at most two out of three properties in the presence of network partitions:\n\n1. **Consistency (C)**: Every read receives the most recent write or an error.\n2. **Availability (A)**: Every non-failing node returns a response, but it may not be the newest data.\n3. **Partition Tolerance (P)**: The system continues operating despite dropped or delayed network packets.\n\nIn real networks, partitions are inevitable, meaning distributed systems must choose **CP** (e.g., Google Spanner, HBase) or **AP** (e.g., Cassandra, DynamoDB).",
+    "tokens_input": 11,
+    "tokens_output": 140
+  },
+  {
+    "id": "prompt-sys-2",
+    "prompt": "What is Raft consensus algorithm?",
+    "category": "System Design",
+    "response": "Raft is a leader-based consensus algorithm designed to be more understandable than Paxos. It decomposes distributed state machine replication into three key sub-problems:\n\n1. **Leader Election**: Heartbeat timers trigger election timeouts. Nodes transition to Candidate and request votes; a majority quorum elects the new Leader.\n2. **Log Replication**: The Leader accepts client commands, appends them to its write-ahead log, and broadcasts `AppendEntries` RPCs to followers.\n3. **Safety Guarantee**: Only candidates possessing all committed log entries can be elected leader.",
+    "tokens_input": 10,
+    "tokens_output": 130
+  },
+  {
+    "id": "prompt-web-1",
+    "prompt": "How does the virtual DOM work in React?",
+    "category": "Frontend",
+    "response": "The Virtual DOM (VDOM) is a lightweight in-memory representation of real browser DOM elements. When state changes occur:\n\n1. A new VDOM tree is constructed in JavaScript memory.\n2. React performs a heuristic $O(N)$ tree-diffing reconciliation algorithm against the previous VDOM snapshot.\n3. Only the minimal set of computed mutations (batch patches) are flushed to the real DOM, avoiding expensive browser layout recalcs and repaints.",
+    "tokens_input": 12,
+    "tokens_output": 105
+  },
+  {
+    "id": "prompt-food-1",
+    "prompt": "How to bake a sourdough bread loaf at home",
+    "category": "Culinary",
+    "response": "Baking artisan sourdough involves a 24-hour fermentation cycle:\n\n1. **Levain Build**: Mix 50g ripe starter, 50g bread flour, 50g water (1:1:1 ratio). Wait 4–6 hrs until peaked.\n2. **Autolyse**: Mix 450g bread flour, 50g whole wheat, 350g water ($70\\%$ hydration). Rest for 45 mins.\n3. **Incorporate**: Add 100g levain and 10g fine sea salt.\n4. **Bulk Fermentation**: Perform 4 sets of stretch-and-folds every 30 mins, then let rise until increased in volume by $40\\%$.\n5. **Shape & Cold Retard**: Shape into a batard, place into a banneton, and chill in the fridge at 4°C for 14 hours.\n6. **Bake**: Bake inside a preheated Dutch oven at 230°C (450°F) with lid on for 20 mins, then lid off for 20 mins until deep mahogany.",
+    "tokens_input": 14,
+    "tokens_output": 175
+  },
+  {
+    "id": "prompt-food-2",
+    "prompt": "Best brewing ratio for French press coffee",
+    "category": "Culinary",
+    "response": "The golden standard for French Press is a **1:15 to 1:16 brew ratio** (coffee grams to water grams):\n\n- **Standard single serving**: 30g coarse ground coffee to 450g water at 94°C (200°F).\n- **Method**:\n  1. Add coffee grounds and pour all hot water evenly.\n  2. Let steep untouched for 4 minutes.\n  3. Gently stir the crust and skim off residual surface foam with two spoons.\n  4. Rest for an additional 5 minutes to let sediment settle to the bottom.\n  5. Insert the plunger just below the surface (do not press hard) and pour smoothly into your mug.",
+    "tokens_input": 13,
+    "tokens_output": 145
+  },
+  {
+    "id": "prompt-phys-1",
+    "prompt": "Explain quantum entanglement in simple terms",
+    "category": "Physics",
+    "response": "Quantum entanglement occurs when two or more particles become intimately connected such that the quantum state of each particle cannot be described independently of the other, regardless of distance.\n\nFor example, if a particle pair is generated with total spin zero, measuring Particle A as 'spin up' instantaneously determines that Particle B will be 'spin down' when measured—even if separated by billions of light years. Einstein famously referred to this as 'spooky action at a distance', but it does not permit faster-than-light communication because the outcome of any measurement is intrinsically probabilistic.",
+    "tokens_input": 11,
+    "tokens_output": 135
+  }
+]

@@ -1,0 +1,268 @@
+.main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px 48px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+/* Navbar */
+.navbar-header {
+  background: rgba(14, 20, 36, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon-box {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 245, 212, 0.1);
+  border: 1.5px solid rgba(0, 245, 212, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+}
+
+.radar-ping-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(0, 245, 212, 0.35) 60deg, transparent 70deg);
+  animation: radarSpin 3s linear infinite;
+}
+
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.brand-target-symbol {
+  font-size: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.brand-version {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.brand-tagline {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* Cluster Status Pills */
+.status-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cluster-pill {
+  background: rgba(8, 12, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.indicator-online {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.indicator-offline {
+  background: #f43f5e;
+  box-shadow: 0 0 8px #f43f5e;
+}
+
+.pill-name {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.pill-val {
+  font-weight: 700;
+}
+
+.text-emerald { color: #10b981; }
+.text-rose { color: #f43f5e; }
+
+.dim-pill {
+  background: rgba(0, 187, 249, 0.12);
+  border: 1px solid rgba(0, 187, 249, 0.3);
+  color: #38bdf8;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Section Blocks */
+.section-block {
+  width: 100%;
+}
+
+/* Section 3: Dual Workspace Grid (58% / 42%) */
+.workspace-layout {
+  display: grid;
+  grid-template-columns: 58% calc(42% - 24px);
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .workspace-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.workspace-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f5d4;
+  box-shadow: 0 0 8px #00f5d4;
+}
+
+.col-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.5px;
+}
+
+.col-sub {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.col-stats {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Section 4: Analytics Row (45% / 55%) */
+.analytics-layout {
+  display: grid;
+  grid-template-columns: 44% calc(56% - 24px);
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .analytics-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analytics-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer */
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer-left strong {
+  color: #cbd5e1;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+}

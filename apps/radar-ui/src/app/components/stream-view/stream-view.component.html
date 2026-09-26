@@ -1,0 +1,100 @@
+<div class="stream-panel">
+  <!-- Top Bar: Status Pill & Latency Display -->
+  <div class="stream-header">
+    <div class="status-group">
+      <!-- Status Pill -->
+      <span 
+        class="status-pill mono"
+        [ngClass]="{
+          'pill-hit': result?.cache_hit,
+          'pill-miss': result && !result.cache_hit && !result.streaming,
+          'pill-stream': result?.streaming,
+          'pill-idle': !result
+        }">
+        <span *ngIf="result?.cache_hit">⚡ CACHE HIT</span>
+        <span *ngIf="result?.streaming">🌐 LLM STREAMING...</span>
+        <span *ngIf="result && !result.cache_hit && !result.streaming">🌐 CACHE MISS (INDEXED)</span>
+        <span *ngIf="!result">AWAITING QUERY</span>
+      </span>
+
+      <!-- Similarity Score Tag -->
+      <span *ngIf="result?.similarity !== undefined" class="similarity-tag mono">
+        Similarity: <strong [ngClass]="result!.cache_hit ? 'text-emerald' : 'text-purple'">
+          {{ (result!.similarity * 100) | number:'1.1-1' }}%
+        </strong>
+        <span class="threshold-ref">(Threshold: {{ (result!.threshold * 100) | number:'1.0-0' }}%)</span>
+      </span>
+    </div>
+
+    <!-- Latency Stats -->
+    <div *ngIf="result" class="latency-box mono">
+      <span class="latency-label">Response:</span>
+      <strong [ngClass]="result.cache_hit ? 'text-emerald' : 'text-amber'">
+        {{ result.latency_ms }}ms
+      </strong>
+      <span *ngIf="result.cache_hit" class="saved-delta">
+        -{{ (result.baseline_ms - result.latency_ms) }}ms
+      </span>
+    </div>
+  </div>
+
+  <!-- Side-by-Side Latency Comparison Bar -->
+  <div *ngIf="result" class="comparison-container">
+    <div class="comparison-labels mono">
+      <div class="comp-col">
+        <span class="marker-dot dot-cache"></span>
+        <span class="comp-name">PromptRadar:</span>
+        <strong class="text-emerald">{{ result.cache_hit ? result.latency_ms + 'ms' : 'Bypassed' }}</strong>
+      </div>
+      <div class="comp-col">
+        <span class="marker-dot dot-llm"></span>
+        <span class="comp-name">Direct LLM:</span>
+        <strong class="text-purple">{{ result.baseline_ms }}ms</strong>
+      </div>
+    </div>
+
+    <!-- Dual Comparison Progress Tracks -->
+    <div class="dual-tracks">
+      <div class="track-row">
+        <div 
+          class="track-fill fill-cache" 
+          [style.width.%]="result.cache_hit ? (result.latency_ms / result.baseline_ms * 100) : 100">
+        </div>
+      </div>
+    </div>
+
+    <!-- Nearest Cached Intent Preview -->
+    <div *ngIf="result.nearest_prompt" class="nearest-intent">
+      <span class="nearest-label">Nearest Cached Vector:</span>
+      <span class="nearest-text">"{{ result.nearest_prompt }}"</span>
+    </div>
+  </div>
+
+  <!-- Response Terminal/Text Viewer -->
+  <div class="response-viewport">
+    <div *ngIf="!result && !streamText" class="empty-state">
+      <div class="empty-radar-glow"></div>
+      <p class="empty-title">Ready for In-Memory Vector Search</p>
+      <p class="empty-sub">
+        Submit a query or click one of the quick test chips to evaluate 768-D cosine similarity against cached embeddings.
+      </p>
+    </div>
+
+    <div *ngIf="result || streamText" class="response-content">
+      <div class="rendered-markdown" [innerHTML]="renderedHtml"></div>
+      <span *ngIf="result?.streaming" class="blinking-cursor"></span>
+    </div>
+  </div>
+
+  <!-- Footer Stats -->
+  <div *ngIf="result && !result.streaming" class="stream-footer mono">
+    <div class="footer-item">
+      <span>Tokens:</span>
+      <strong class="text-blue">{{ result.tokens_saved > 0 ? (result.tokens_saved + ' saved') : 'Indexed into cache' }}</strong>
+    </div>
+    <div *ngIf="result.cache_hit" class="footer-item">
+      <span>Cost Saved:</span>
+      <strong class="text-emerald">${{ result.cost_saved | number:'1.5-5' }}</strong>
+    </div>
+  </div>
+</div>

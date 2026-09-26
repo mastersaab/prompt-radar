@@ -1,0 +1,197 @@
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  position: relative;
+  background: rgba(13, 19, 33, 0.85);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Card 1: Emerald Theme (Hit Rate) */
+.card-hit {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.08) 0%, rgba(13, 19, 33, 0.95) 70%);
+}
+.card-hit:hover {
+  border-color: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+}
+.bubble-emerald {
+  background: rgba(16, 185, 129, 0.18);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.text-emerald {
+  color: #10b981;
+  text-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+}
+.text-emerald-light {
+  color: #6ee7b7;
+}
+
+/* Card 2: Cyan Theme (Latency) */
+.card-latency {
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  background: linear-gradient(145deg, rgba(0, 245, 212, 0.08) 0%, rgba(13, 19, 33, 0.95) 70%);
+}
+.card-latency:hover {
+  border-color: rgba(0, 245, 212, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 245, 212, 0.15);
+}
+.bubble-cyan {
+  background: rgba(0, 245, 212, 0.18);
+  color: #00f5d4;
+  border: 1px solid rgba(0, 245, 212, 0.4);
+}
+.text-cyan {
+  color: #00f5d4;
+  text-shadow: 0 0 16px rgba(0, 245, 212, 0.4);
+}
+
+/* Card 3: Blue Theme (Tokens) */
+.card-tokens {
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: linear-gradient(145deg, rgba(56, 189, 248, 0.08) 0%, rgba(13, 19, 33, 0.95) 70%);
+}
+.card-tokens:hover {
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
+}
+.bubble-blue {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.text-blue {
+  color: #38bdf8;
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+/* Card 4: Gold Theme (Cost Saved) */
+.card-cost {
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(145deg, rgba(245, 158, 11, 0.08) 0%, rgba(13, 19, 33, 0.95) 70%);
+}
+.card-cost:hover {
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+}
+.bubble-gold {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.text-gold {
+  color: #fbbf24;
+  text-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+/* Card 5: Purple Theme (Vectors) */
+.card-vectors {
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: linear-gradient(145deg, rgba(168, 85, 247, 0.08) 0%, rgba(13, 19, 33, 0.95) 70%);
+}
+.card-vectors:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.15);
+}
+.bubble-purple {
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.text-purple {
+  color: #c084fc;
+  text-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+.text-purple-light {
+  color: #d8b4fe;
+}
+
+/* Internal Card Elements */
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.icon-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-value-box {
+  margin: 10px 0 6px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.card-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.card-unit {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.card-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.card-sub {
+  font-size: 11px;
+  color: #94a3b8;
+}

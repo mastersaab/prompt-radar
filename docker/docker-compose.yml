@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: prompt-radar-postgres
+    environment:
+      POSTGRES_DB: prompt_radar
+      POSTGRES_USER: radar
+      POSTGRES_PASSWORD: radar_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U radar -d prompt_radar"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  radar-control-plane:
+    build:
+      context: ../apps/radar-control-plane
+      dockerfile: Dockerfile
+    container_name: prompt-radar-control-plane
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/prompt_radar
+      SPRING_DATASOURCE_USERNAME: radar
+      SPRING_DATASOURCE_PASSWORD: radar_password
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  radar-proxy:
+    build:
+      context: ..
+      dockerfile: apps/radar-proxy/Dockerfile
+    container_name: prompt-radar-proxy
+    environment:
+      PORT: 8081
+      CONTROL_PLANE_URL: http://radar-control-plane:8080/api/v1/telemetry
+      # Optional live LLM keys:
+      # GEMINI_API_KEY: ${GEMINI_API_KEY}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - radar-control-plane
+
+  radar-ui:
+    build:
+      context: ../apps/radar-ui
+      dockerfile: Dockerfile
+    container_name: prompt-radar-ui
+    ports:
+      - "4200:80"
+    depends_on:
+      - radar-proxy
+
+volumes:
+  postgres_data:

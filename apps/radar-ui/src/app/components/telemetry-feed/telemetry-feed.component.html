@@ -1,0 +1,70 @@
+<div class="feed-panel">
+  <!-- Feed Header -->
+  <div class="feed-header">
+    <div class="feed-title-row">
+      <span class="live-beacon"></span>
+      <h3 class="feed-title">Real-Time Proxy Query Feed</h3>
+      <span class="feed-count mono">{{ logs.length }} logs captured</span>
+    </div>
+    <div class="feed-status-badge mono">
+      <span>Control Plane Ingest:</span>
+      <strong class="text-emerald">ACTIVE</strong>
+    </div>
+  </div>
+
+  <!-- Table Viewport -->
+  <div class="table-container">
+    <table class="telemetry-table">
+      <thead>
+        <tr>
+          <th class="th-status">STATUS</th>
+          <th class="th-prompt">PROMPT INTENT</th>
+          <th class="th-sim">SIMILARITY</th>
+          <th class="th-latency">LATENCY</th>
+          <th class="th-tokens">TOKENS SAVED</th>
+          <th class="th-model">MODEL</th>
+          <th class="th-time">TIME</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs" class="table-row">
+          <td class="td-status">
+            <span 
+              class="status-chip mono"
+              [ngClass]="log.cacheHit ? 'chip-hit' : 'chip-miss'">
+              {{ log.cacheHit ? 'HIT ⚡' : 'MISS 🌐' }}
+            </span>
+          </td>
+          <td class="td-prompt" [title]="log.prompt">
+            <span class="prompt-text">{{ log.prompt }}</span>
+          </td>
+          <td class="td-sim mono">
+            <span [ngClass]="log.cacheHit ? 'text-emerald' : 'text-purple'">
+              {{ (log.similarity * 100) | number:'1.1-1' }}%
+            </span>
+          </td>
+          <td class="td-latency mono font-bold">
+            <span [ngClass]="log.cacheHit ? 'text-emerald' : 'text-amber'">
+              {{ log.latencyMs }}ms
+            </span>
+          </td>
+          <td class="td-tokens mono">
+            <span class="text-blue">{{ log.tokensSaved > 0 ? ('+' + log.tokensSaved) : '—' }}</span>
+          </td>
+          <td class="td-model mono text-muted">
+            {{ log.model }}
+          </td>
+          <td class="td-time mono text-muted">
+            {{ log.timestamp | date:'HH:mm:ss' }}
+          </td>
+        </tr>
+
+        <tr *ngIf="logs.length === 0">
+          <td colspan="7" class="empty-feed">
+            No telemetry events yet. Execute a query to see live proxy logs.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

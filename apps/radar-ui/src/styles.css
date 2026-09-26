@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import "katex/dist/katex.min.css";
+
+:root {
+  /* Surface & Background Palette */
+  --bg-app: #060811;
+  --bg-card: rgba(14, 20, 36, 0.75);
+  --bg-card-hover: rgba(22, 31, 56, 0.85);
+  --bg-elevated: #111728;
+  --bg-input: #0a0e1c;
+  --bg-table-stripe: rgba(255, 255, 255, 0.02);
+
+  /* Borders & Glass */
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-glass-bright: rgba(0, 245, 212, 0.35);
+  --border-focus: #00f5d4;
+
+  /* Accent Colors (Vibrant & Distinct) */
+  --color-hit: #10b981;
+  --color-hit-glow: rgba(16, 185, 129, 0.35);
+  --color-miss: #a855f7;
+  --color-miss-glow: rgba(168, 85, 247, 0.35);
+  --color-cyan: #00f5d4;
+  --color-cyan-glow: rgba(0, 245, 212, 0.3);
+  --color-blue: #38bdf8;
+  --color-amber: #f59e0b;
+  --color-rose: #f43f5e;
+  --color-gold: #fbbf24;
+
+  /* Typography */
+  --text-main: #f8fafc;
+  --text-sub: #cbd5e1;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadows & Glows */
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+  --shadow-neon: 0 0 20px rgba(0, 245, 212, 0.25);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 245, 212, 0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 10%, rgba(168, 85, 247, 0.08), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 85%, rgba(56, 189, 248, 0.06), transparent 70%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(6, 8, 17, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cyan);
+}
+
+/* Typography Helpers */
+.mono {
+  font-family: var(--font-mono);
+}
+
+.gradient-title {
+  background: linear-gradient(135deg, #00f5d4 0%, #38bdf8 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Layout Utilities (Pure Vanilla CSS) */
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.items-start {
+  align-items: flex-start;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-center {
+  justify-content: center;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.gap-5 { gap: 20px; }
+.gap-6 { gap: 24px; }
+
+.grid {
+  display: grid;
+}
+
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+
+/* Common Card Surface */
+.surface-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.surface-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}

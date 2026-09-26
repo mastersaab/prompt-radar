@@ -1,0 +1,94 @@
+<div class="prompt-input-panel">
+  <!-- Top: Search Box & Submit Button -->
+  <form (ngSubmit)="onSubmit()" class="query-form">
+    <div class="input-container">
+      <div class="input-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+
+      <input
+        type="text"
+        [(ngModel)]="promptText"
+        name="prompt"
+        placeholder="Enter prompt to test semantic cache (e.g. 'Golang sort slice example' or a new prompt)..."
+        class="search-input mono"
+        [disabled]="isStreaming"
+        autocomplete="off"
+        required
+      />
+
+      <button 
+        type="button" 
+        *ngIf="promptText && !isStreaming" 
+        (click)="promptText = ''" 
+        class="clear-input-btn"
+        aria-label="Clear input">
+        ✕
+      </button>
+    </div>
+
+    <button 
+      type="submit" 
+      [disabled]="!promptText.trim() || isStreaming"
+      class="query-btn">
+      <span *ngIf="!isStreaming" class="btn-content">
+        <span>Query Radar</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </span>
+      <span *ngIf="isStreaming" class="btn-content streaming">
+        <span class="btn-spinner"></span>
+        <span>Streaming...</span>
+      </span>
+    </button>
+  </form>
+
+  <!-- Controls Divider -->
+  <div class="controls-divider"></div>
+
+  <!-- Bottom Row: Sensitivity Slider + Quick Test Chips -->
+  <div class="controls-bar">
+    <!-- Slider Group -->
+    <div class="slider-box">
+      <div class="slider-labels">
+        <span class="slider-title">Sensitivity Threshold:</span>
+        <span class="slider-desc">Sim &ge; {{ threshold | number:'1.2-2' }} &rarr; Hit</span>
+      </div>
+      <div class="slider-interactive">
+        <input
+          type="range"
+          min="0.70"
+          max="0.98"
+          step="0.01"
+          [ngModel]="threshold"
+          (ngModelChange)="onThresholdChange($event)"
+          class="range-slider"
+        />
+        <span class="threshold-pill mono">{{ threshold | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <!-- Quick Presets -->
+    <div class="presets-box">
+      <span class="presets-intro">Try Seed:</span>
+      <div class="preset-buttons">
+        <button
+          type="button"
+          *ngFor="let p of presets"
+          (click)="selectPreset(p.text)"
+          class="preset-button"
+          [ngClass]="p.isHit ? 'btn-preset-hit' : 'btn-preset-miss'"
+          [title]="p.hint"
+        >
+          <span class="badge-tag" [ngClass]="p.isHit ? 'tag-hit' : 'tag-miss'">{{ p.tag }}</span>
+          <span class="preset-text">{{ p.text }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

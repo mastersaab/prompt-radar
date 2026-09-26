@@ -1,0 +1,66 @@
+<div class="canvas-wrapper" #container>
+  <canvas #canvas class="radar-canvas"></canvas>
+
+  <!-- Top-Right HUD Overlay -->
+  <div class="radar-hud">
+    <div class="hud-item">
+      <span class="hud-label">PROJECTION</span>
+      <span class="hud-val mono">Static Matrix W (768&times;2)</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">FPS</span>
+      <span class="hud-val mono text-cyan">60.0</span>
+    </div>
+  </div>
+
+  <!-- Interactive Hover Tooltip -->
+  <div 
+    *ngIf="hoveredNode" 
+    class="node-tooltip"
+    [style.left.px]="tooltipX"
+    [style.top.px]="tooltipY">
+    <div class="tooltip-header">
+      <span class="category-chip" [style.background]="getCategoryColor(hoveredNode.category)">
+        {{ hoveredNode.category }}
+      </span>
+      <span class="node-id mono">{{ hoveredNode.id }}</span>
+    </div>
+    <p class="tooltip-title">{{ hoveredNode.prompt }}</p>
+    <div class="tooltip-coords mono">
+      <span>X: {{ hoveredNode.x.toFixed(4) }}</span>
+      <span>Y: {{ hoveredNode.y.toFixed(4) }}</span>
+    </div>
+  </div>
+
+  <!-- Bottom Legend Bar -->
+  <div class="canvas-legend">
+    <div class="legend-badge">
+      <span class="color-dot dot-golang"></span>
+      <span>Golang</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-python"></span>
+      <span>Python</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-ml"></span>
+      <span>Machine Learning</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-system"></span>
+      <span>System Design</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-culinary"></span>
+      <span>Culinary</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-physics"></span>
+      <span>Physics</span>
+    </div>
+    <div class="legend-badge">
+      <span class="color-dot dot-query"></span>
+      <span class="text-cyan">Active Query</span>
+    </div>
+  </div>
+</div>
