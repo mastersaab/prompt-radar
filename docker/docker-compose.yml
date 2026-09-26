@@ -5,15 +5,15 @@ services:
     image: postgres:16-alpine
     container_name: prompt-radar-postgres
     environment:
-      POSTGRES_DB: prompt_radar
-      POSTGRES_USER: radar
-      POSTGRES_PASSWORD: radar_password
+      POSTGRES_DB: ${POSTGRES_DB:-prompt_radar}
+      POSTGRES_USER: ${POSTGRES_USER:-radar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-radar_password}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U radar -d prompt_radar"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-radar} -d ${POSTGRES_DB:-prompt_radar}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,13 +24,13 @@ services:
       dockerfile: Dockerfile
     container_name: prompt-radar-control-plane
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/prompt_radar
-      SPRING_DATASOURCE_USERNAME: radar
-      SPRING_DATASOURCE_PASSWORD: radar_password
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://postgres:5432/${POSTGRES_DB:-prompt_radar}}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-radar}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-radar_password}
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SERVER_PORT: 8080
+      SERVER_PORT: ${CONTROL_PLANE_PORT:-8080}
     ports:
-      - "8080:8080"
+      - "${CONTROL_PLANE_PORT:-8080}:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,12 +41,11 @@ services:
       dockerfile: apps/radar-proxy/Dockerfile
     container_name: prompt-radar-proxy
     environment:
-      PORT: 8081
-      CONTROL_PLANE_URL: http://radar-control-plane:8080/api/v1/telemetry
-      # Optional live LLM keys:
-      # GEMINI_API_KEY: ${GEMINI_API_KEY}
+      PORT: ${PROXY_PORT:-8081}
+      CONTROL_PLANE_URL: ${CONTROL_PLANE_URL:-http://radar-control-plane:8080/api/v1/telemetry}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     ports:
-      - "8081:8081"
+      - "${PROXY_PORT:-8081}:8081"
     depends_on:
       - radar-control-plane
 
@@ -56,7 +55,7 @@ services:
       dockerfile: Dockerfile
     container_name: prompt-radar-ui
     ports:
-      - "4200:80"
+      - "${UI_PORT:-4200}:80"
     depends_on:
       - radar-proxy
 

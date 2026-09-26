@@ -10,6 +10,7 @@ plan.md
 # Environment & Credentials
 .env
 .env.*
+!.env.example
 *.env
 *.pem
 *.key
